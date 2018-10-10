@@ -1,0 +1,148 @@
+"""
+This script aims at find ways to implement the previous code in python GUI with the help of pyQT5
+"""
+import os
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QPushButton, QMessageBox, QAction, QTableWidget,
+                             QTableWidgetItem, QInputDialog, QLineEdit, QFileDialog)
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QIcon,QPixmap
+from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog,
+                             QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
+                             QLabel, QLineEdit, QMenu, QMenuBar, QPushButton, QSpinBox, QTextEdit,
+                             QVBoxLayout)
+
+
+class App_widget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.title = 'GE Digital'
+        self.left = 10
+        self.top = 10
+        self.width = 640
+        self.height = 480
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+        '''
+        # MessageBox
+        buttonReply = QMessageBox.question(self, 'PyQt5 message', "Do you like PyQt5?", QMessageBox.Open | QMessageBox.Save, QMessageBox.Save)
+        if buttonReply == QMessageBox.Yes:
+            print('Yes clicked.')
+        else:
+            print('No clicked.')
+        '''
+        # Button
+        button = QPushButton('PyQt5 button', self)
+        button.setToolTip('This is an example button')
+        button.move(100, 70)
+        button.clicked.connect(self.on_click)
+        '''
+        # textbox (input)
+        self.textbox = QLineEdit(self)
+        self.textbox.move(20, 20)
+        self.textbox.resize(280, 40)
+
+        # input dialogs
+        self.getDouble()
+        self.show()
+
+        # load image
+        label = QLabel(self)
+        pixmap = QPixmap('load_img.png')
+        label.setPixmap(pixmap)
+        self.resize(pixmap.width(), pixmap.height())
+
+        # open and save files
+        self.openFileNameDialog()
+        self.openFileNamesDialog()
+        self.saveFileDialog()
+        '''
+        self.show()
+
+    def getDouble(self):
+        d, okPressed = QInputDialog.getDouble(self, 'Get double', 'Value', 9, 0.5, 100, 9.5)
+        if okPressed:
+            print(d)
+
+    def openFileNameDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+
+    def openFileNamesDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
+                                                "All Files (*);;Python Files (*.py)", options=options)
+        if files:
+            print(files)
+
+    def saveFileDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getSaveFileName(self, "QFileDialog.getSaveFileName()", "",
+                                                  "All Files (*);;Text Files (*.txt)", options=options)
+        if fileName:
+            print(fileName)
+
+
+    @pyqtSlot()
+    def on_click(self):
+        path = 'C:/Users/212727218/Documents/Shuai_Zhu/ProjectOne/YiFan'
+
+        print(os.listdir(path))
+        self.openFileNameDialog()
+
+        # textboxValue = self.textbox.text()
+        # QMessageBox.question(self, 'Message', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
+        # self.textbox.setText("")
+
+
+class App_window(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.title = 'GE Digital'
+        self.left = 10
+        self.top = 10
+        self.width = 440
+        self.height = 280
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        # static text
+        label = QLabel('Python', self)
+        label.move(50, 50)
+
+        # mainMenu
+        mainMenu = self.menuBar()
+        fileMenu = mainMenu.addMenu('File')
+        editMenu = mainMenu.addMenu('Edit')
+        viewMenu = mainMenu.addMenu('View')
+        searchMenu = mainMenu.addMenu('Search')
+        toolsMenu = mainMenu.addMenu('Tools')
+        helpMenu = mainMenu.addMenu('Help')
+
+        exitButton = QAction('Exit', self)
+        exitButton.setShortcut('Ctrl+Q')
+        exitButton.setStatusTip('Exit application')
+        exitButton.triggered.connect(self.close)
+        fileMenu.addAction(exitButton)
+
+        self.show()
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    # ex = App_window()
+    ex = App_widget()
+    sys.exit(app.exec_())
